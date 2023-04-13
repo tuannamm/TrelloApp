@@ -7,6 +7,8 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import eu.tutorials.trelloapp.R
 import eu.tutorials.trelloapp.databinding.ActivitySignUpBinding
+import eu.tutorials.trelloapp.firebase.FireStoreClass
+import eu.tutorials.trelloapp.models.User
 
 class SignUpActivity : BaseActivity() {
     private lateinit var binding: ActivitySignUpBinding
@@ -16,6 +18,13 @@ class SignUpActivity : BaseActivity() {
         binding = ActivitySignUpBinding.inflate(layoutInflater)
         setContentView(binding.root)
         setupActionBar()
+    }
+
+    fun userRegisteredSuccess() {
+        Toast.makeText(this@SignUpActivity, "You have successfully registered.", Toast.LENGTH_SHORT).show()
+        hideProgressDialog()
+        FirebaseAuth.getInstance().signOut()
+        finish()
     }
 
     private fun setupActionBar() {
@@ -42,13 +51,11 @@ class SignUpActivity : BaseActivity() {
             showProgressDialog(resources.getString(R.string.please_wait))
             FirebaseAuth.getInstance().createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener { task ->
-                    hideProgressDialog()
                     if (task.isSuccessful) {
                         val firebaseUser : FirebaseUser = task.result!!.user!!
                         val registeredEmail = firebaseUser.email!!
-                        Toast.makeText(this@SignUpActivity, "$name have successfully registered the email $registeredEmail.", Toast.LENGTH_SHORT).show()
-                        FirebaseAuth.getInstance().signOut()
-                        finish()
+                        val user = User(firebaseUser.uid, name, registeredEmail)
+                        FireStoreClass().registerUser(this@SignUpActivity, user)
                     } else {
                         Toast.makeText(this@SignUpActivity, "Registration failed", Toast.LENGTH_SHORT).show()
                     }
