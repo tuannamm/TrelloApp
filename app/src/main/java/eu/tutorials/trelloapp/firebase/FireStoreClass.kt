@@ -6,6 +6,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
 import eu.tutorials.trelloapp.activities.BaseActivity
+import eu.tutorials.trelloapp.activities.SignInActivity
 import eu.tutorials.trelloapp.activities.SignUpActivity
 import eu.tutorials.trelloapp.models.User
 import eu.tutorials.trelloapp.utils.Constants
@@ -23,7 +24,21 @@ class FireStoreClass {
             }
             .addOnFailureListener { e ->
                 activity.hideProgressDialog()
-                Log.e(activity.javaClass.simpleName, "Error while registering the user.", e)
+                Log.e("Sign Up", "Error while registering the user.", e)
+            }
+    }
+
+    fun signInUser(activity: SignInActivity) {
+        mFireStore.collection(Constants.USERS)
+            .document(getCurrentUserId())
+            .get()
+            .addOnSuccessListener { document ->
+                val loggedInUser = document.toObject(User::class.java)!!
+                activity.signInSuccess(loggedInUser)
+            }
+            .addOnFailureListener { e ->
+                activity.hideProgressDialog()
+                Log.e("Sign In", "Error while signing in the user.", e)
             }
     }
 

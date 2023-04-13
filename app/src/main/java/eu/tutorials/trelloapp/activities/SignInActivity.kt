@@ -11,6 +11,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.ktx.Firebase
 import eu.tutorials.trelloapp.R
 import eu.tutorials.trelloapp.databinding.ActivitySignInBinding
+import eu.tutorials.trelloapp.models.User
 
 class SignInActivity : BaseActivity() {
     private lateinit var binding: ActivitySignInBinding
@@ -34,6 +35,12 @@ class SignInActivity : BaseActivity() {
 
         setupActionBar()
 
+    }
+
+    fun signInSuccess(user: User) {
+        hideProgressDialog()
+        startActivity(Intent(this, MainActivity::class.java))
+        finish()
     }
 
     // A function for actionBar Setup.
