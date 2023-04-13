@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1018563282968",
+    "project_id": "projectmanag-a259f",
+    "storage_bucket": "projectmanag-a259f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1018563282968:android:60214d0bd9640c2f109b6d",
+        "android_client_info": {
+          "package_name": "eu.tutorials.trelloapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1018563282968-gjktfuqt8dd2968m5lritqdqmcv6tt0v.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCLVoXjF2N_Dd6AAORNuM2VXD2QVhR4QLI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1018563282968-gjktfuqt8dd2968m5lritqdqmcv6tt0v.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
