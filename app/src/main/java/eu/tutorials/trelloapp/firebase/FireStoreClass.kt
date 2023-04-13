@@ -42,7 +42,7 @@ class FireStoreClass {
             }
     }
 
-    private  fun getCurrentUserId(): String {
+    fun getCurrentUserId(): String {
         var currentUser = FirebaseAuth.getInstance().currentUser
         var currentUserID = ""
         if (currentUser != null) {

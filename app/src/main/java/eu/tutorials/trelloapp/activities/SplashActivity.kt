@@ -8,6 +8,7 @@ import android.os.Handler
 import android.os.Looper
 import android.view.WindowManager
 import eu.tutorials.trelloapp.databinding.ActivitySplashBinding
+import eu.tutorials.trelloapp.firebase.FireStoreClass
 
 
 class SplashActivity : AppCompatActivity() {
@@ -32,7 +33,12 @@ class SplashActivity : AppCompatActivity() {
 
         // 3 second splash time
         Handler(Looper.getMainLooper()).postDelayed({
-            startActivity(Intent(this, IntroActivity::class.java))
+            var currentUserID = FireStoreClass().getCurrentUserId()
+            if (currentUserID.isNotEmpty()) {
+                startActivity(Intent(this, MainActivity::class.java))
+            } else {
+                startActivity(Intent(this, IntroActivity::class.java))
+            }
             finish()
         }, 3000) // 2500 is the delayed time in milliseconds.
 
