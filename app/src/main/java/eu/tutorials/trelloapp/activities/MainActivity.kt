@@ -4,13 +4,17 @@ package eu.tutorials.trelloapp.activities
 import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
+import android.widget.TextView
 import android.widget.Toast
 
 import androidx.core.view.GravityCompat
+import com.bumptech.glide.Glide
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
 import eu.tutorials.trelloapp.R
 import eu.tutorials.trelloapp.databinding.ActivityMainBinding
+import eu.tutorials.trelloapp.firebase.FireStoreClass
+import eu.tutorials.trelloapp.models.User
 
 class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedListener {
     private lateinit var binding: ActivityMainBinding
@@ -22,6 +26,8 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
 
         setupActionBar()
         binding.navView.setNavigationItemSelectedListener(this)
+
+        FireStoreClass().signInUser(this)
     }
 
     // A function for actionBar Setup.
@@ -48,6 +54,17 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         } else {
             doubleBackToExit()
         }
+    }
+
+    fun updateNavigationUserDetails(user: User) {
+        Glide
+            .with(this)
+            .load(user.image)
+            .centerCrop()
+            .placeholder(R.drawable.ic_user_place_holder).dontAnimate()
+            .into(binding.navView.findViewById(R.id.nav_user_image))
+
+        binding.navView.getHeaderView(0).findViewById<TextView>(R.id.tv_username).text = user.name
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {

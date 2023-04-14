@@ -1,11 +1,13 @@
 package eu.tutorials.trelloapp.firebase
 
+import android.app.Activity
 import android.media.session.MediaSessionManager.RemoteUserInfo
 import android.util.Log
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
 import eu.tutorials.trelloapp.activities.BaseActivity
+import eu.tutorials.trelloapp.activities.MainActivity
 import eu.tutorials.trelloapp.activities.SignInActivity
 import eu.tutorials.trelloapp.activities.SignUpActivity
 import eu.tutorials.trelloapp.models.User
@@ -28,16 +30,31 @@ class FireStoreClass {
             }
     }
 
-    fun signInUser(activity: SignInActivity) {
+    fun signInUser(activity: Activity) {
         mFireStore.collection(Constants.USERS)
             .document(getCurrentUserId())
             .get()
             .addOnSuccessListener { document ->
                 val loggedInUser = document.toObject(User::class.java)!!
-                activity.signInSuccess(loggedInUser)
+
+                when(activity) {
+                    is SignInActivity -> {
+                        activity.signInSuccess(loggedInUser)
+                    }
+                    is MainActivity -> {
+                        activity.updateNavigationUserDetails(loggedInUser)
+                    }
+                }
             }
             .addOnFailureListener { e ->
-                activity.hideProgressDialog()
+                when(activity) {
+                    is SignInActivity -> {
+                        activity.hideProgressDialog()
+                    }
+                    is MainActivity -> {
+                        activity.hideProgressDialog()
+                    }
+                }
                 Log.e("Sign In", "Error while signing in the user.", e)
             }
     }
