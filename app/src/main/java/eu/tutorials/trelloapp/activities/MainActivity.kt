@@ -5,7 +5,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
 import android.widget.TextView
-import android.widget.Toast
 
 import androidx.core.view.GravityCompat
 import com.bumptech.glide.Glide
@@ -27,7 +26,7 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         setupActionBar()
         binding.navView.setNavigationItemSelectedListener(this)
 
-        FireStoreClass().signInUser(this)
+        FireStoreClass().loadUserData(this)
     }
 
     // A function for actionBar Setup.

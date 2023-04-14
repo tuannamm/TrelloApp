@@ -1,13 +1,12 @@
 package eu.tutorials.trelloapp.firebase
 
 import android.app.Activity
-import android.media.session.MediaSessionManager.RemoteUserInfo
 import android.util.Log
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
-import eu.tutorials.trelloapp.activities.BaseActivity
 import eu.tutorials.trelloapp.activities.MainActivity
+import eu.tutorials.trelloapp.activities.MyProfileActivity
 import eu.tutorials.trelloapp.activities.SignInActivity
 import eu.tutorials.trelloapp.activities.SignUpActivity
 import eu.tutorials.trelloapp.models.User
@@ -30,7 +29,7 @@ class FireStoreClass {
             }
     }
 
-    fun signInUser(activity: Activity) {
+    fun loadUserData(activity: Activity) {
         mFireStore.collection(Constants.USERS)
             .document(getCurrentUserId())
             .get()
@@ -43,6 +42,9 @@ class FireStoreClass {
                     }
                     is MainActivity -> {
                         activity.updateNavigationUserDetails(loggedInUser)
+                    }
+                    is MyProfileActivity -> {
+                        activity.setUserDataInUI(loggedInUser)
                     }
                 }
             }
