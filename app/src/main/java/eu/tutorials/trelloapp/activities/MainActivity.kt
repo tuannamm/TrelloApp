@@ -16,14 +16,16 @@ import eu.tutorials.trelloapp.R
 import eu.tutorials.trelloapp.databinding.ActivityMainBinding
 import eu.tutorials.trelloapp.firebase.FireStoreClass
 import eu.tutorials.trelloapp.models.User
+import eu.tutorials.trelloapp.utils.Constants
 
 class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedListener {
     private lateinit var binding: ActivityMainBinding
 
     companion object {
         const val MY_PROFILE_REQUEST_CODE: Int = 11
-        const val BOARD_MEMBERS_REQUEST_CODE: Int = 12
     }
+
+    private lateinit var mUserName: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,7 +38,9 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         FireStoreClass().loadUserData(this)
 
         binding.appBarMain.fabCreateBoard.setOnClickListener {
-            startActivity(Intent(this, CreateBoardActivity::class.java))
+            val intent = Intent(this, CreateBoardActivity::class.java)
+            intent.putExtra(Constants.NAME, mUserName)
+            startActivity(intent)
         }
     }
 
@@ -67,6 +71,9 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
     }
 
     fun updateNavigationUserDetails(user: User) {
+
+        mUserName = user.name
+
         Glide
             .with(this)
             .load(user.image)

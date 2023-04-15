@@ -6,10 +6,8 @@ import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
-import eu.tutorials.trelloapp.activities.MainActivity
-import eu.tutorials.trelloapp.activities.MyProfileActivity
-import eu.tutorials.trelloapp.activities.SignInActivity
-import eu.tutorials.trelloapp.activities.SignUpActivity
+import eu.tutorials.trelloapp.activities.*
+import eu.tutorials.trelloapp.models.Board
 import eu.tutorials.trelloapp.models.User
 import eu.tutorials.trelloapp.utils.Constants
 
@@ -27,6 +25,21 @@ class FireStoreClass {
             .addOnFailureListener { e ->
                 activity.hideProgressDialog()
                 Log.e("Sign Up", "Error while registering the user.", e)
+            }
+    }
+
+    fun createBoard(activity: CreateBoardActivity, board: Board) {
+        mFireStore.collection(Constants.BOARDS)
+            .document()
+            .set(board, SetOptions.merge())
+            .addOnSuccessListener {
+                Log.e(activity.javaClass.simpleName, "Board created successfully.")
+                Toast.makeText(activity, "Board created successfully!", Toast.LENGTH_SHORT).show()
+                activity.boardCreatedSuccessfully()
+            }
+            .addOnFailureListener { e ->
+                activity.hideProgressDialog()
+                Log.e(activity.javaClass.simpleName, "Error while creating the board.", e)
             }
     }
 
