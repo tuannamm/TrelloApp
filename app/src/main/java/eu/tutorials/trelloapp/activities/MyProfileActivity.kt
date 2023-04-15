@@ -177,7 +177,6 @@ class MyProfileActivity : BaseActivity() {
                     hideProgressDialog()
                     Toast.makeText(this@MyProfileActivity, exception.message, Toast.LENGTH_SHORT).show()
                 }
-
             }
         }
 
