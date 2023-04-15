@@ -6,6 +6,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
+import android.view.View
 import android.widget.TextView
 
 import androidx.core.view.GravityCompat
@@ -13,8 +14,10 @@ import com.bumptech.glide.Glide
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
 import eu.tutorials.trelloapp.R
+import eu.tutorials.trelloapp.adapters.BoardItemsAdapter
 import eu.tutorials.trelloapp.databinding.ActivityMainBinding
 import eu.tutorials.trelloapp.firebase.FireStoreClass
+import eu.tutorials.trelloapp.models.Board
 import eu.tutorials.trelloapp.models.User
 import eu.tutorials.trelloapp.utils.Constants
 
@@ -35,7 +38,7 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         setupActionBar()
         binding.navView.setNavigationItemSelectedListener(this)
 
-        FireStoreClass().loadUserData(this)
+        FireStoreClass().loadUserData(this, true)
 
         binding.appBarMain.fabCreateBoard.setOnClickListener {
             val intent = Intent(this, CreateBoardActivity::class.java)
@@ -43,6 +46,25 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
             startActivity(intent)
         }
     }
+    fun populateBoardsListToUi(boardsList: ArrayList<Board>) {
+        hideProgressDialog()
+
+        if (boardsList.size > 0) {
+            binding.appBarMain.contentMain.rvBoardsList.visibility = View.VISIBLE
+            binding.appBarMain.contentMain.tvNoBoardsAvailable.visibility = View.GONE
+
+            binding.appBarMain.contentMain.rvBoardsList.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(this)
+            binding.appBarMain.contentMain.rvBoardsList.setHasFixedSize(true)
+
+            val adapter = BoardItemsAdapter(this, boardsList)
+            binding.appBarMain.contentMain.rvBoardsList.adapter = adapter
+
+        } else {
+            binding.appBarMain.contentMain.rvBoardsList.visibility = View.GONE
+            binding.appBarMain.contentMain.tvNoBoardsAvailable.visibility = View.VISIBLE
+        }
+    }
+
 
     // A function for actionBar Setup.
     private fun setupActionBar() {
@@ -70,7 +92,7 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         }
     }
 
-    fun updateNavigationUserDetails(user: User) {
+    fun updateNavigationUserDetails(user: User, readBoardsList: Boolean) {
 
         mUserName = user.name
 
@@ -82,6 +104,11 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
             .into(binding.navView.findViewById(R.id.nav_user_image))
 
         binding.navView.getHeaderView(0).findViewById<TextView>(R.id.tv_username).text = user.name
+
+        if(readBoardsList) {
+            showProgressDialog(resources.getString(R.string.please_wait))
+            FireStoreClass().getBoardsList(this)
+        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
