@@ -17,6 +17,7 @@ import eu.tutorials.trelloapp.R
 import eu.tutorials.trelloapp.databinding.ActivityMyProfileBinding
 import eu.tutorials.trelloapp.firebase.FireStoreClass
 import eu.tutorials.trelloapp.models.User
+import eu.tutorials.trelloapp.utils.Constants
 
 class MyProfileActivity : BaseActivity() {
     private lateinit var binding: ActivityMyProfileBinding
@@ -27,6 +28,7 @@ class MyProfileActivity : BaseActivity() {
     }
 
     private var mSelectedImageFileUri: Uri? = null
+    private lateinit var mUserDetails: User
     private var mProfileImageURL: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -57,11 +59,10 @@ class MyProfileActivity : BaseActivity() {
         binding.btnUpdate.setOnClickListener {
             if (mSelectedImageFileUri != null) {
                 uploadUserImage()
+            } else {
+                showProgressDialog(resources.getString(R.string.please_wait))
+                updateUserProfileData()
             }
-//            } else {
-//                showProgressDialog(resources.getString(R.string.please_wait))
-//                updateUserProfileData()
-//            }
         }
     }
 
@@ -123,6 +124,7 @@ class MyProfileActivity : BaseActivity() {
         }
 
         fun setUserDataInUI(user: User) {
+            mUserDetails = user
             Glide
                 .with(this@MyProfileActivity)
                 .load(user.image)
@@ -135,6 +137,26 @@ class MyProfileActivity : BaseActivity() {
             if (user.mobile != 0L) { // long value
                 binding.etMobile.setText(user.mobile.toString())
             }
+        }
+
+        private fun updateUserProfileData() {
+            val userHashMap = HashMap<String, Any>()
+
+            if(mProfileImageURL.isNotEmpty() && mProfileImageURL != mUserDetails.image) {
+                userHashMap[Constants.IMAGE] = mProfileImageURL
+            }
+
+            if (binding.etName.text.toString() != mUserDetails.name) {
+                userHashMap[Constants.NAME] = binding.etName.text.toString()
+            }
+
+            if (binding.etMobile.text.toString() != mUserDetails.mobile.toString()) {
+                userHashMap[Constants.MOBILE] = binding.etMobile.text.toString().toLong()
+            }
+
+
+            FireStoreClass().updateUserProfileData(this, userHashMap)
+
         }
 
         private fun uploadUserImage() {
@@ -151,7 +173,7 @@ class MyProfileActivity : BaseActivity() {
                         Log.i("Downloadable Image URL", uri.toString())
                         hideProgressDialog()
                         mProfileImageURL = uri.toString()
-                        hideProgressDialog()
+                        updateUserProfileData()
                         Toast.makeText(this@MyProfileActivity, "Image uploaded successfully!", Toast.LENGTH_SHORT).show()
                     }
                 }.addOnFailureListener {
@@ -165,5 +187,10 @@ class MyProfileActivity : BaseActivity() {
 
         private fun getFileExtension(uri: Uri): String? {
             return MimeTypeMap.getSingleton().getExtensionFromMimeType(contentResolver.getType(uri!!))
+        }
+
+        fun profileUpdateSuccess() {
+            hideProgressDialog()
+            finish()
         }
     }
