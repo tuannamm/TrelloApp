@@ -1,5 +1,6 @@
 package eu.tutorials.trelloapp.activities
 
+import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
@@ -102,6 +103,7 @@ class CreateBoardActivity : BaseActivity() {
 
     fun boardCreatedSuccessfully() {
         hideProgressDialog()
+        setResult(Activity.RESULT_OK)
         finish()
     }
 

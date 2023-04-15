@@ -11,7 +11,6 @@ import eu.tutorials.trelloapp.R
 import eu.tutorials.trelloapp.models.Board
 
 open class BoardItemsAdapter(
-
     private val context: Context,
     private var list: ArrayList<Board>
 

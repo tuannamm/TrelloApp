@@ -28,6 +28,7 @@ class FireStoreClass {
             }
     }
 
+    // A function to get the current logged in user details from Firestore.
     fun createBoard(activity: CreateBoardActivity, board: Board) {
         mFireStore.collection(Constants.BOARDS)
             .document()
