@@ -1,5 +1,6 @@
 package eu.tutorials.trelloapp.activities
 
+import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
@@ -191,6 +192,7 @@ class MyProfileActivity : BaseActivity() {
 
         fun profileUpdateSuccess() {
             hideProgressDialog()
+            setResult(Activity.RESULT_OK)
             finish()
         }
     }
