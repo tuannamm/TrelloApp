@@ -1,10 +1,13 @@
 package eu.tutorials.trelloapp.activities
 
 import android.os.Bundle
+import androidx.recyclerview.widget.LinearLayoutManager
 import eu.tutorials.trelloapp.R
+import eu.tutorials.trelloapp.adapters.TaskListItemsAdapter
 import eu.tutorials.trelloapp.databinding.ActivityTaskListBinding
 import eu.tutorials.trelloapp.firebase.FireStoreClass
 import eu.tutorials.trelloapp.models.Board
+import eu.tutorials.trelloapp.models.Task
 import eu.tutorials.trelloapp.utils.Constants
 
 class TaskListActivity : BaseActivity() {
@@ -38,5 +41,13 @@ class TaskListActivity : BaseActivity() {
     fun boardDetails(board: Board) {
         hideProgressDialog()
         setupActionBar(board.name)
+
+        val addTaskList = Task(resources.getString(R.string.add_list))
+        board.taskList.add(addTaskList)
+        binding.rvTaskList.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+        binding.rvTaskList.setHasFixedSize(true)
+
+        val adapter = TaskListItemsAdapter(this, board.taskList)
+        binding.rvTaskList.adapter = adapter
     }
 }
