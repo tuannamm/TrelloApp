@@ -107,7 +107,6 @@ class MyProfileActivity : BaseActivity() {
                 }
             }
 
-
         private fun setupActionBar() {
             setSupportActionBar(binding.toolbarMyProfileActivity)
             val actionBar = supportActionBar
