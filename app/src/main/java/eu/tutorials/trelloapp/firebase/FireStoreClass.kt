@@ -28,6 +28,7 @@ class FireStoreClass {
             }
     }
 
+    // A function to get the current logged in user details from FireStore.
     fun getBoardDetails(activity: TaskListActivity, documentId: String){
         mFireStore.collection(Constants.BOARDS)
             .document(documentId)
@@ -35,14 +36,16 @@ class FireStoreClass {
             .addOnSuccessListener {
                 document ->
                 Log.i(activity.javaClass.simpleName, document.toString())
-                activity.boardDetails(document.toObject(Board::class.java)!!)
+                val board = document.toObject(Board::class.java)!!
+                board.documentId = document.id
+                activity.boardDetails(board)
             }.addOnFailureListener {e ->
                 activity.hideProgressDialog()
                 Log.e(activity.javaClass.simpleName, "Error while creating the board.", e)
             }
     }
 
-    // A function to get the current logged in user details from Firestore.
+    // A function to get the current logged in user details from FireStore.
     fun createBoard(activity: CreateBoardActivity, board: Board) {
         mFireStore.collection(Constants.BOARDS)
             .document()
@@ -58,6 +61,7 @@ class FireStoreClass {
             }
     }
 
+
     fun getBoardsList(activity: MainActivity) {
         mFireStore.collection(Constants.BOARDS)
             .whereArrayContains(Constants.ASSIGNED_TO, getCurrentUserId())
@@ -71,6 +75,23 @@ class FireStoreClass {
                     boardsList.add(board)
                 }
                 activity.populateBoardsListToUi(boardsList)
+            }
+            .addOnFailureListener { e ->
+                activity.hideProgressDialog()
+                Log.e(activity.javaClass.simpleName, "Error while creating the board.", e)
+            }
+    }
+
+    fun addUpdateTaskList(activity: TaskListActivity, board: Board) {
+        val taskListHashMap = HashMap<String, Any>()
+        taskListHashMap[Constants.TASK_LIST] = board.taskList
+
+        mFireStore.collection(Constants.BOARDS)
+            .document(board.documentId)
+            .update(taskListHashMap)
+            .addOnSuccessListener {
+                Log.e(activity.javaClass.simpleName, "TaskList updated successfully.")
+                activity.addUpdateTaskListSuccess()
             }
             .addOnFailureListener { e ->
                 activity.hideProgressDialog()
