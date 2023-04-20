@@ -7,6 +7,7 @@ import eu.tutorials.trelloapp.adapters.TaskListItemsAdapter
 import eu.tutorials.trelloapp.databinding.ActivityTaskListBinding
 import eu.tutorials.trelloapp.firebase.FireStoreClass
 import eu.tutorials.trelloapp.models.Board
+import eu.tutorials.trelloapp.models.Card
 import eu.tutorials.trelloapp.models.Task
 import eu.tutorials.trelloapp.utils.Constants
 
@@ -86,4 +87,22 @@ class TaskListActivity : BaseActivity() {
         showProgressDialog(resources.getString(R.string.please_wait))
         FireStoreClass().addUpdateTaskList(this, mBoardDetails)
     }
+
+    fun addCardToTaskList(position: Int, cardName: String) {
+        mBoardDetails.taskList.removeAt(mBoardDetails.taskList.size - 1)
+
+        val cardAssignedUsersList: ArrayList<String> = ArrayList()
+        cardAssignedUsersList.add(FireStoreClass().getCurrentUserId())
+
+        val card = Card(cardName, FireStoreClass().getCurrentUserId(), cardAssignedUsersList)
+        val cardsList = mBoardDetails.taskList[position].cards
+        cardsList.add(card)
+
+        val task = Task(mBoardDetails.taskList[position].title, mBoardDetails.taskList[position].createdBy, cardsList)
+        mBoardDetails.taskList[position] = task
+
+        showProgressDialog(resources.getString(R.string.please_wait))
+        FireStoreClass().addUpdateTaskList(this, mBoardDetails)
+    }
 }
+
