@@ -44,10 +44,10 @@ class CardDetailsActivity : BaseActivity() {
         getIntentData()
         setupActionBar()
 
-//        binding.etNameCardDetails.setText(mBoardDetails.taskList[mTaskListPosition].cards[mCardPosition].name)
+        binding.etNameCardDetails.setText(mBoardDetails.taskList[mTaskListPosition].cards[mCardPosition].name)
         binding.etNameCardDetails.setSelection(binding.etNameCardDetails.text.toString().length)
 
-//        mSelectedColor = mBoardDetails.taskList[mTaskListPosition].cards[mCardPosition].labelColor
+        mSelectedColor = mBoardDetails.taskList[mTaskListPosition].cards[mCardPosition].labelColor
         if (mSelectedColor.isNotEmpty()) {
             setColor()
         }
@@ -123,8 +123,8 @@ class CardDetailsActivity : BaseActivity() {
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true)
             actionBar.setHomeAsUpIndicator(R.drawable.ic_white_color_back_24dp)
-            actionBar.title = "Card Details"
-//            actionBar.title = mBoardDetails.taskList[mTaskListPosition].cards[mCardPosition].name
+//            actionBar.title = "Card Details"
+            actionBar.title = mBoardDetails.taskList[mTaskListPosition].cards[mCardPosition].name
         }
         binding.toolbarCardDetailsActivity.setNavigationOnClickListener { onBackPressed() }
     }
@@ -136,8 +136,7 @@ class CardDetailsActivity : BaseActivity() {
 
     private fun getIntentData() {
         if (intent.hasExtra(Constants.BOARD_DETAIL)) {
-//            mBoardDetails = intent.getParcelableExtra(Constants.BOARD_DETAIL)!!
-            Toast.makeText(this, "Board details found.", Toast.LENGTH_SHORT).show()
+            mBoardDetails = intent.getParcelableExtra(Constants.BOARD_DETAIL)!!
         }
         if (intent.hasExtra(Constants.TASK_LIST_ITEM_POSITION)) {
             mTaskListPosition = intent.getIntExtra(Constants.TASK_LIST_ITEM_POSITION, -1)
