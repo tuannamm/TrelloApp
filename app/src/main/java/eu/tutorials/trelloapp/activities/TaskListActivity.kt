@@ -15,6 +15,7 @@ import eu.tutorials.trelloapp.models.Board
 import eu.tutorials.trelloapp.models.Card
 import eu.tutorials.trelloapp.models.Task
 import eu.tutorials.trelloapp.utils.Constants
+import java.text.FieldPosition
 
 
 open class TaskListActivity : BaseActivity() {
@@ -44,6 +45,15 @@ open class TaskListActivity : BaseActivity() {
             Log.e("Cancelled", "Cancelled")
         }
     }
+
+    fun cardDetails(taskListPosition: Int, cardPosition: Int) {
+        startActivity(Intent(this, CardDetailsActivity::class.java))
+//            .putExtra(Constants.BOARD_DETAIL, mBoardDetails)
+//            .putExtra(Constants.TASK_LIST_ITEM_POSITION, taskListPosition)
+//            .putExtra(Constants.CARD_LIST_ITEM_POSITION, cardPosition)
+//            .putExtra(Constants.BOARD_MEMBERS_LIST, mBoardDetails.assignedTo))
+    }
+
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu_members, menu)

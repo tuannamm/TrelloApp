@@ -1,5 +1,6 @@
 package eu.tutorials.trelloapp.adapters
 
+import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.content.Context
 import android.content.res.Resources
@@ -16,6 +17,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import eu.tutorials.trelloapp.R
 import eu.tutorials.trelloapp.activities.TaskListActivity
+import eu.tutorials.trelloapp.models.Card
 import eu.tutorials.trelloapp.models.Task
 
 open class TaskListItemsAdapter(
@@ -38,7 +40,7 @@ open class TaskListItemsAdapter(
         return list.size
     }
 
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, @SuppressLint("RecyclerView") position: Int) {
         val model = list[position]
         if(holder is MyViewHolder) {
             if(position == list.size - 1) {
@@ -117,6 +119,16 @@ open class TaskListItemsAdapter(
 
             val adapter = CardListItemsAdapter(context, model.cards)
             holder.itemView.findViewById<RecyclerView>(R.id.rv_card_list).adapter = adapter
+
+            adapter.setOnClickListener(
+                object :  CardListItemsAdapter.OnClickListener {
+                    override fun onClick(cardPosition: Int) {
+                        if(context is TaskListActivity) {
+                            context.cardDetails(position, cardPosition)
+                        }
+                    }
+                }
+            )
         }
     }
     private fun alertDialogForDeleteList(position: Int, title: String) {
