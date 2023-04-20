@@ -28,7 +28,7 @@ abstract class LabelColorListDialog(
         setUpRecyclerView(view)
     }
     private fun setUpRecyclerView(view: View) {
-        view.findViewById<TextView>(R.id.tv_title).text = title
+        view.findViewById<TextView>(R.id.tvTitle).text = title
         view.findViewById<RecyclerView>(R.id.rvList).layoutManager = LinearLayoutManager(context)
         adapter = LabelColorListItemsAdapter(context, list, mSelectedColor)
         view.findViewById<RecyclerView>(R.id.rvList).adapter = adapter

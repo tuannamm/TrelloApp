@@ -3,6 +3,7 @@ package eu.tutorials.trelloapp.activities
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.AlertDialog
+import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
@@ -10,6 +11,7 @@ import android.view.MenuItem
 import android.widget.Toast
 import eu.tutorials.trelloapp.R
 import eu.tutorials.trelloapp.databinding.ActivityCardDetailsBinding
+import eu.tutorials.trelloapp.dialogs.LabelColorListDialog
 import eu.tutorials.trelloapp.firebase.FireStoreClass
 import eu.tutorials.trelloapp.models.Board
 import eu.tutorials.trelloapp.models.Card
@@ -21,6 +23,7 @@ class CardDetailsActivity : BaseActivity() {
     private lateinit var mBoardDetails: Board
     private var mTaskListPosition = -1
     private var mCardPosition = -1
+    private var mSelectedColor = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,6 +42,28 @@ class CardDetailsActivity : BaseActivity() {
                 Toast.makeText(this, "Please enter a card name.", Toast.LENGTH_SHORT).show()
             }
         }
+
+        binding.tvSelectLabelColor.setOnClickListener {
+            labelColorsListDialog()
+        }
+    }
+
+    private fun colorList(): ArrayList<String> {
+        val colorList: ArrayList<String> = ArrayList()
+        colorList.add("#000000")
+        colorList.add("#FF0000")
+        colorList.add("#FF7F00")
+        colorList.add("#FFFF00")
+        colorList.add("#00FF00")
+        colorList.add("#0000FF")
+        colorList.add("#4B0082")
+        colorList.add("#9400D3")
+        return colorList
+    }
+
+    private fun setColor() {
+        binding.tvSelectLabelColor.text = ""
+        binding.tvSelectLabelColor.setBackgroundColor(Color.parseColor(mSelectedColor))
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -89,7 +114,8 @@ class CardDetailsActivity : BaseActivity() {
         val card = Card(
             binding.etNameCardDetails.text.toString(),
             mBoardDetails.taskList[mTaskListPosition].cards[mCardPosition].createdBy,
-            mBoardDetails.taskList[mTaskListPosition].cards[mCardPosition].assignedTo
+            mBoardDetails.taskList[mTaskListPosition].cards[mCardPosition].assignedTo,
+            mSelectedColor
         )
 
         mBoardDetails.taskList[mTaskListPosition].cards[mCardPosition] = card
@@ -133,5 +159,21 @@ class CardDetailsActivity : BaseActivity() {
         val alertDialog: AlertDialog = builder.create()
         alertDialog.setCancelable(false)
         alertDialog.show()
+    }
+
+    private fun labelColorsListDialog() {
+        val colorsList: ArrayList<String> = colorList()
+
+        val listDialog = object: LabelColorListDialog(
+            this,
+            colorsList,
+            resources.getString(R.string.str_select_label_color),
+        ) {
+            override fun onItemSelected(color: String) {
+                mSelectedColor = color
+                setColor()
+            }
+        }
+        listDialog.show()
     }
 }

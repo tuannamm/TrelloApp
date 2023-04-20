@@ -7,7 +7,8 @@ import android.os.Parcel
 data class Card (
     val name: String = "",
     val createdBy: String = "",
-    val assignedTo: ArrayList<String> = ArrayList()
+    val assignedTo: ArrayList<String> = ArrayList(),
+    val labelColor: String = ""
 ) : Parcelable {
     constructor(parcel: Parcel) : this (
         parcel.readString()!!,
