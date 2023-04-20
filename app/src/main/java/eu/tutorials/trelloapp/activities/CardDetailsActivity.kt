@@ -2,6 +2,7 @@ package eu.tutorials.trelloapp.activities
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.Menu
 import eu.tutorials.trelloapp.R
 import eu.tutorials.trelloapp.databinding.ActivityCardDetailsBinding
 import eu.tutorials.trelloapp.models.Board
@@ -19,6 +20,9 @@ class CardDetailsActivity : AppCompatActivity() {
         setContentView(binding.root)
         getIntentData()
         setupActionBar()
+
+//        binding.etNameCardDetails.setText(mBoardDetails.taskList[mTaskListPosition].cards[mCardPosition].name)
+        binding.etNameCardDetails.setSelection(binding.etNameCardDetails.text.toString().length)
     }
 
     private fun setupActionBar() {
@@ -31,6 +35,11 @@ class CardDetailsActivity : AppCompatActivity() {
 //            actionBar.title = mBoardDetails.taskList[mTaskListPosition].cards[mCardPosition].name
         }
         binding.toolbarCardDetailsActivity.setNavigationOnClickListener { onBackPressed() }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu_delete_card, menu)
+        return super.onCreateOptionsMenu(menu)
     }
 
     private fun getIntentData(){
