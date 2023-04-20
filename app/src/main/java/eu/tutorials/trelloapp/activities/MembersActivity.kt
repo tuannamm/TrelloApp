@@ -21,6 +21,7 @@ class MembersActivity : BaseActivity() {
 
     private lateinit var binding: ActivityMembersBinding
     private lateinit var mBoardDetails: Board
+    private lateinit var mAssignedMembersList: ArrayList<User>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,7 +29,7 @@ class MembersActivity : BaseActivity() {
         setContentView(binding.root)
 
         if (intent.hasExtra(Constants.DOCUMENT_ID)) {
-//            mBoardDetails = intent.getParcelableExtra(Constants.DOCUMENT_ID)!!
+//            mBoardDetails = intent.getStringArrayListExtra(Constants.DOCUMENT_ID)!! as Board
 //            showProgressDialog(resources.getString(R.string.please_wait))
 //            FireStoreClass().getAssignedMembersListDetails(this, intent.getStringExtra(Constants.DOCUMENT_ID)!!)
 
@@ -37,12 +38,12 @@ class MembersActivity : BaseActivity() {
         setupActionBar()
 
         showProgressDialog(resources.getString(R.string.please_wait))
-//        FireStoreClass().getAssignedMembersListDetails(this, mBoardDetails.assignedTo)
-
-
+        FireStoreClass().getAssignedMembersListDetails(this, mBoardDetails.assignedTo)
     }
 
     fun setupMembersList(list: ArrayList<User>) {
+
+        mAssignedMembersList = list
         hideProgressDialog()
 
         binding.rvMembersList.layoutManager = LinearLayoutManager(this)
@@ -50,6 +51,11 @@ class MembersActivity : BaseActivity() {
 
         val adapter = MemberListItemsAdapter(this, list)
         binding.rvMembersList.adapter = adapter
+    }
+
+    fun memberDetails(user: User) {
+        mBoardDetails.assignedTo.add(user.id)
+        FireStoreClass().assignMemberToBoard(this, mBoardDetails, user)
     }
 
     private fun setupActionBar() {
@@ -87,7 +93,7 @@ class MembersActivity : BaseActivity() {
             if (email.isNotEmpty()) {
                 dialog.dismiss()
                 showProgressDialog(resources.getString(R.string.please_wait))
-//                FireStoreClass().getMemberDetails(this, email)
+                FireStoreClass().getMemberDetails(this, email)
             } else {
                 Toast.makeText(this, "Please enter a email address", Toast.LENGTH_SHORT).show()
             }
@@ -96,6 +102,12 @@ class MembersActivity : BaseActivity() {
             dialog.dismiss()
         }
         dialog.show()
+    }
+
+    fun memberAssignSuccess(user: User) {
+        hideProgressDialog()
+        mAssignedMembersList.add(user)
+        setupMembersList(mAssignedMembersList)
     }
 
 
