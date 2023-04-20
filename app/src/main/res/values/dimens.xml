@@ -87,8 +87,6 @@
     <dimen name="task_item_rv_card_list_margin">5dp</dimen>
     <dimen name="task_item_add_card_text_elevation">10dp</dimen>
 
-    <!--TODO (Step 2: All the dimen values are added here.)-->
-    <!--START-->
     <dimen name="item_card_content_margin">8dp</dimen>
     <dimen name="item_card_cv_elevation">5dp</dimen>
     <dimen name="item_card_label_height">15dp</dimen>
@@ -96,5 +94,10 @@
     <dimen name="item_card_name_text_size">16sp</dimen>
     <dimen name="item_card_members_text_padding">10dp</dimen>
     <dimen name="item_card_members_text_size">14sp</dimen>
+
+    <!--TODO (Step 4: All the dimen values are added here.)-->
+    <!--START-->
+    <dimen name="members_content_padding">16dp</dimen>
+    <dimen name="members_cv_marginTop">5dp</dimen>
     <!--END-->
 </resources>
