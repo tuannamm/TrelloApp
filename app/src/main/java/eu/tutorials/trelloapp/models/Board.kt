@@ -2,8 +2,6 @@ package eu.tutorials.trelloapp.models
 
 import android.os.Parcel
 import android.os.Parcelable
-import kotlinx.parcelize.Parceler
-import kotlinx.parcelize.Parcelize
 
 data class Board(
     val name: String = "",
