@@ -13,7 +13,7 @@ data class Card (
     constructor(parcel: Parcel) : this (
         parcel.readString()!!,
         parcel.readString()!!,
-        parcel.createStringArrayList()!!
+        parcel.createStringArrayList()!!,
     ) {}
 
     override fun describeContents() = 0
@@ -22,6 +22,7 @@ data class Card (
         writeString(name)
         writeString(createdBy)
         writeStringList(assignedTo)
+        writeString(labelColor)
     }
 
     companion object CREATOR : Parcelable.Creator<Card> {
