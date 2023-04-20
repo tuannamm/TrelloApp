@@ -4,11 +4,13 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.AlertDialog
 import android.graphics.Color
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import eu.tutorials.trelloapp.R
 import eu.tutorials.trelloapp.databinding.ActivityCardDetailsBinding
 import eu.tutorials.trelloapp.dialogs.LabelColorListDialog
@@ -16,6 +18,7 @@ import eu.tutorials.trelloapp.firebase.FireStoreClass
 import eu.tutorials.trelloapp.models.Board
 import eu.tutorials.trelloapp.models.Card
 import eu.tutorials.trelloapp.models.Task
+import eu.tutorials.trelloapp.models.User
 import eu.tutorials.trelloapp.utils.Constants
 
 class CardDetailsActivity : BaseActivity() {
@@ -24,6 +27,7 @@ class CardDetailsActivity : BaseActivity() {
     private var mTaskListPosition = -1
     private var mCardPosition = -1
     private var mSelectedColor = ""
+    private lateinit var mMembersDetailList: ArrayList<User>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -106,12 +110,16 @@ class CardDetailsActivity : BaseActivity() {
     private fun getIntentData(){
         if(intent.hasExtra(Constants.BOARD_DETAIL)){
 //            mBoardDetails = intent.getParcelableExtra(Constants.BOARD_DETAIL)!!
+            Toast.makeText(this, "Board details found.", Toast.LENGTH_SHORT).show()
         }
         if(intent.hasExtra(Constants.TASK_LIST_ITEM_POSITION)){
             mTaskListPosition = intent.getIntExtra(Constants.TASK_LIST_ITEM_POSITION, -1)
         }
         if (intent.hasExtra(Constants.CARD_LIST_ITEM_POSITION)){
             mCardPosition = intent.getIntExtra(Constants.CARD_LIST_ITEM_POSITION, -1)
+        }
+        if (intent.hasExtra(Constants.BOARD_MEMBERS_LIST)){
+            mMembersDetailList = intent.getParcelableArrayListExtra(Constants.CARD_LIST_ITEM_POSITION)!!
         }
     }
 

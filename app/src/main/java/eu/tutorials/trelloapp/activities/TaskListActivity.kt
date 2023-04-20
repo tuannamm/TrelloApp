@@ -14,6 +14,7 @@ import eu.tutorials.trelloapp.firebase.FireStoreClass
 import eu.tutorials.trelloapp.models.Board
 import eu.tutorials.trelloapp.models.Card
 import eu.tutorials.trelloapp.models.Task
+import eu.tutorials.trelloapp.models.User
 import eu.tutorials.trelloapp.utils.Constants
 import java.text.FieldPosition
 
@@ -23,6 +24,7 @@ open class TaskListActivity : BaseActivity() {
     private lateinit var binding: ActivityTaskListBinding
     private lateinit var mBoardDetails: Board
     private lateinit var mBoardDocumentId: String
+    private lateinit var mAssignedMemberDetailList: ArrayList<User>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,6 +53,7 @@ open class TaskListActivity : BaseActivity() {
         intent.putExtra(Constants.BOARD_DETAIL, mBoardDetails)
         intent.putExtra(Constants.TASK_LIST_ITEM_POSITION, taskListPosition)
         intent.putExtra(Constants.CARD_LIST_ITEM_POSITION, cardPosition)
+        intent.putExtra(Constants.BOARD_MEMBERS_LIST, mAssignedMemberDetailList)
         startActivityForResult(intent, CARD_DETAILS_REQUEST_CODE)
     }
 
@@ -96,6 +99,12 @@ open class TaskListActivity : BaseActivity() {
 
         val adapter = TaskListItemsAdapter(this, board.taskList)
         binding.rvTaskList.adapter = adapter
+
+        showProgressDialog(resources.getString(R.string.please_wait))
+        FireStoreClass().getAssignedMembersListDetails(
+            this,
+            mBoardDetails.assignedTo
+        )
     }
 
     fun addUpdateTaskListSuccess() {
@@ -146,6 +155,11 @@ open class TaskListActivity : BaseActivity() {
 
         showProgressDialog(resources.getString(R.string.please_wait))
         FireStoreClass().addUpdateTaskList(this, mBoardDetails)
+    }
+
+    fun boardMembersDetailsList(list: ArrayList<User>) {
+        mAssignedMemberDetailList = list
+        hideProgressDialog()
     }
 
     companion object {
