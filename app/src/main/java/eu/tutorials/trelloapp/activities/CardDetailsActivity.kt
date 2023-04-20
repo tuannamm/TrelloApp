@@ -267,7 +267,7 @@ class CardDetailsActivity : BaseActivity() {
             binding.rvSelectedMembersList.visibility = View.GONE
             binding.rvSelectedMembersList.layoutManager = GridLayoutManager(this, 6)
 
-            val adapter = CardMemberListsAdapter(this, selectedMembersList)
+            val adapter = CardMemberListsAdapter(this, selectedMembersList, true)
             binding.rvSelectedMembersList.adapter = adapter
             adapter.setOnClickListener(
                 object : CardMemberListsAdapter.OnClickListener {

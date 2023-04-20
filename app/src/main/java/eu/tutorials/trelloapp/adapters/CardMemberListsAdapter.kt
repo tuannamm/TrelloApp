@@ -12,7 +12,8 @@ import eu.tutorials.trelloapp.models.SelectedMembers
 
 open class CardMemberListsAdapter(
     private val context: Context,
-    private var list: ArrayList<SelectedMembers>)
+    private var list: ArrayList<SelectedMembers>,
+    private val mAssignMembers: Boolean)
     : RecyclerView.Adapter<RecyclerView.ViewHolder>()
 {
     private var onClickListener: OnClickListener? = null
@@ -33,7 +34,7 @@ open class CardMemberListsAdapter(
         val model = list[position]
 
         if(holder is MyViewHolder) {
-            if(position == list.size - 1) {
+            if(position == list.size - 1 && mAssignMembers)
                 holder.itemView.findViewById<CircleImageView>(R.id.iv_add_member).visibility = View.VISIBLE
                 holder.itemView.findViewById<CircleImageView>(R.id.iv_selected_member_image).visibility = View.GONE
             } else {
@@ -54,7 +55,6 @@ open class CardMemberListsAdapter(
                 }
             }
         }
-    }
 
     fun setOnClickListener(onClickListener: OnClickListener) {
         this.onClickListener = onClickListener
@@ -63,6 +63,5 @@ open class CardMemberListsAdapter(
     interface OnClickListener {
         fun onClick(position: Int, model: SelectedMembers)
     }
-
     class MyViewHolder(view: View) : RecyclerView.ViewHolder(view)
 }
