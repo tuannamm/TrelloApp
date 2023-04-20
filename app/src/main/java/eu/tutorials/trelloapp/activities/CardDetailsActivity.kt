@@ -27,8 +27,8 @@ class CardDetailsActivity : AppCompatActivity() {
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true)
             actionBar.setHomeAsUpIndicator(R.drawable.ic_white_color_back_24dp)
-//            actionBar.title = "Card Details"
-            actionBar.title = mBoardDetails.taskList[mTaskListPosition].cards[mCardPosition].name
+            actionBar.title = "Card Details"
+//            actionBar.title = mBoardDetails.taskList[mTaskListPosition].cards[mCardPosition].name
         }
         binding.toolbarCardDetailsActivity.setNavigationOnClickListener { onBackPressed() }
     }
