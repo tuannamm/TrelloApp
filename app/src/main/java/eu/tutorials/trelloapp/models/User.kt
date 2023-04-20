@@ -12,7 +12,8 @@ data class User (
     var email: String = "",
     var image: String = "",
     var mobile: Long = 0,
-    var fcmToken: String = ""
+    var fcmToken: String = "",
+    var selected: Boolean = false
 ) : Parcelable {
     constructor(parcel: Parcel) : this (
         parcel.readString()!!,
@@ -20,7 +21,7 @@ data class User (
         parcel.readString()!!,
         parcel.readString()!!,
         parcel.readLong(),
-        parcel.readString()!!
+        parcel.readString()!!,
         ) {}
 
     override fun describeContents() = 0
