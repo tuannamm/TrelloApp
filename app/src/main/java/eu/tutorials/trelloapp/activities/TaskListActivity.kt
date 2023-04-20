@@ -40,9 +40,9 @@ class TaskListActivity : BaseActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.action_members -> {
-                startActivity(Intent(this, MembersActivity::class.java))
-//                showProgressDialog(resources.getString(R.string.please_wait))
-//                FireStoreClass().getAssignedMembersListDetails(this, mBoardDetails.assignedTo)
+                val intent = Intent(this, MembersActivity::class.java)
+                intent.putExtra(Constants.DOCUMENT_ID, mBoardDetails.documentId)
+                startActivity(intent)
             }
         }
         return super.onOptionsItemSelected(item)
