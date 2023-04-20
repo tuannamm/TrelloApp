@@ -14,7 +14,7 @@ import eu.tutorials.trelloapp.models.Card
 import eu.tutorials.trelloapp.models.Task
 import eu.tutorials.trelloapp.utils.Constants
 
-class TaskListActivity : BaseActivity() {
+open class TaskListActivity : BaseActivity() {
 
     private lateinit var binding: ActivityTaskListBinding
 

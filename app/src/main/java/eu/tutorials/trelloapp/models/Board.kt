@@ -5,7 +5,6 @@ import android.os.Parcelable
 import kotlinx.parcelize.Parceler
 import kotlinx.parcelize.Parcelize
 
-@Parcelize
 data class Board(
     val name: String = "",
     val image: String = "",
@@ -23,19 +22,22 @@ data class Board(
         parcel.createTypedArrayList(Task.CREATOR)!!
     ) {}
 
-    companion object : Parceler<Board> {
+    override fun describeContents() = 0
 
-        override fun Board.write(parcel: Parcel, flags: Int) = with(parcel) {
-            parcel.writeString(name)
-            parcel.writeString(image)
-            parcel.writeString(createdBy)
-            parcel.writeStringList(assignedTo)
-            parcel.writeString(documentId)
-            parcel.writeTypedList(taskList)
-        }
+    override fun writeToParcel(dest: Parcel, flags: Int) = with(dest) {
+        writeString(name)
+        writeString(image)
+        writeString(createdBy)
+        writeStringList(assignedTo)
+        writeString(documentId)
+        writeTypedList(taskList)
+    }
 
-        override fun create(parcel: Parcel): Board {
-            return Board(parcel)
+    companion object {
+        @JvmField
+        val CREATOR: Parcelable.Creator<Board> = object : Parcelable.Creator<Board> {
+            override fun createFromParcel(source: Parcel): Board = Board(source)
+            override fun newArray(size: Int): Array<Board?> = arrayOfNulls(size)
         }
     }
 }
