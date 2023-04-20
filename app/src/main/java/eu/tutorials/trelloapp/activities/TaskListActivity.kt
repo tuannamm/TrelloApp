@@ -47,11 +47,11 @@ open class TaskListActivity : BaseActivity() {
     }
 
     fun cardDetails(taskListPosition: Int, cardPosition: Int) {
-        startActivity(Intent(this, CardDetailsActivity::class.java))
-//            .putExtra(Constants.BOARD_DETAIL, mBoardDetails)
-//            .putExtra(Constants.TASK_LIST_ITEM_POSITION, taskListPosition)
-//            .putExtra(Constants.CARD_LIST_ITEM_POSITION, cardPosition)
-//            .putExtra(Constants.BOARD_MEMBERS_LIST, mBoardDetails.assignedTo))
+        val intent = Intent(this, CardDetailsActivity::class.java)
+        intent.putExtra(Constants.BOARD_DETAIL, mBoardDetails)
+        intent.putExtra(Constants.TASK_LIST_ITEM_POSITION, taskListPosition)
+        intent.putExtra(Constants.CARD_LIST_ITEM_POSITION, cardPosition)
+        startActivity(intent)
     }
 
 
