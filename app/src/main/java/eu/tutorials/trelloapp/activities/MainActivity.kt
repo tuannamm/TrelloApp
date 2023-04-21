@@ -44,20 +44,20 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         setupActionBar()
         binding.navView.setNavigationItemSelectedListener(this)
 
-//        mSharedPreferences = this.getSharedPreferences(Constants.TRELLOAPP_PREFERENCES, Context.MODE_PRIVATE)
-//
-//        val tokenUpdated = mSharedPreferences.getBoolean(Constants.FCM_TOKEN_UPDATED, false)
-//
-//        if(tokenUpdated) {
-//            showProgressDialog(resources.getString(R.string.please_wait))
-//            FireStoreClass().loadUserData(this, true)
-//        } else {
-//            Toast.makeText(this@MainActivity, "Token Error", Toast.LENGTH_SHORT).show()
-//            FirebaseInstallations.getInstance().getToken(true)
-//                .addOnSuccessListener(this@MainActivity) { instanceIdResult ->
-//                    updateFCMToken(instanceIdResult.token)
-//                }
-//        }
+        mSharedPreferences = this.getSharedPreferences(Constants.TRELLOAPP_PREFERENCES, Context.MODE_PRIVATE)
+
+        val tokenUpdated = mSharedPreferences.getBoolean(Constants.FCM_TOKEN_UPDATED, false)
+
+        if(tokenUpdated) {
+            showProgressDialog(resources.getString(R.string.please_wait))
+            FireStoreClass().loadUserData(this, true)
+        } else {
+            Toast.makeText(this@MainActivity, "Token Error", Toast.LENGTH_SHORT).show()
+            FirebaseInstallations.getInstance().getToken(true)
+                .addOnSuccessListener(this@MainActivity) { instanceIdResult ->
+                    updateFCMToken(instanceIdResult.token)
+                }
+        }
 
         FireStoreClass().loadUserData(this, true)
 
@@ -125,7 +125,7 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
     }
 
     fun updateNavigationUserDetails(user: User, readBoardsList: Boolean) {
-
+        hideProgressDialog()
         mUserName = user.name
 
         Glide
