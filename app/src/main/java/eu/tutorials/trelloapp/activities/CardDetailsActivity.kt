@@ -4,10 +4,13 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.AlertDialog
 import android.app.DatePickerDialog
+import android.content.Intent
 import android.graphics.Color
 import android.os.Build
+import android.os.Build.VERSION
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Parcelable
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -28,6 +31,9 @@ import java.util.Calendar
 import java.util.Date
 import java.util.Locale
 
+
+
+
 class CardDetailsActivity : BaseActivity() {
     private lateinit var binding: ActivityCardDetailsBinding
     private lateinit var mBoardDetails: Board
@@ -36,8 +42,18 @@ class CardDetailsActivity : BaseActivity() {
     private var mSelectedColor = ""
     private lateinit var mMembersDetailList: ArrayList<User>
     private var mSelectedDueDateMilliSeconds: Long = 0
+    inline fun <reified T : Parcelable> Intent.parcelable(key: String): T? = when {
+        VERSION.SDK_INT >= 33 -> getParcelableExtra(key, T::class.java)
+        else -> @Suppress("DEPRECATION") getParcelableExtra(key) as? T
+    }
+
+    inline fun <reified T : Parcelable> Bundle.parcelable(key: String): T? = when {
+        VERSION.SDK_INT >= 33 -> getParcelable(key, T::class.java)
+        else -> @Suppress("DEPRECATION") getParcelable(key) as? T
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+
         super.onCreate(savedInstanceState)
         binding = ActivityCardDetailsBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -123,7 +139,6 @@ class CardDetailsActivity : BaseActivity() {
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true)
             actionBar.setHomeAsUpIndicator(R.drawable.ic_white_color_back_24dp)
-//            actionBar.title = "Card Details"
             actionBar.title = mBoardDetails.taskList[mTaskListPosition].cards[mCardPosition].name
         }
         binding.toolbarCardDetailsActivity.setNavigationOnClickListener { onBackPressed() }
@@ -135,6 +150,7 @@ class CardDetailsActivity : BaseActivity() {
     }
 
     private fun getIntentData() {
+
         if (intent.hasExtra(Constants.BOARD_DETAIL)) {
             mBoardDetails = intent.getParcelableExtra(Constants.BOARD_DETAIL)!!
         }
@@ -146,7 +162,7 @@ class CardDetailsActivity : BaseActivity() {
         }
         if (intent.hasExtra(Constants.BOARD_MEMBERS_LIST)) {
             mMembersDetailList =
-                intent.getParcelableArrayListExtra(Constants.CARD_LIST_ITEM_POSITION)!!
+                intent.getParcelableArrayListExtra(Constants.BOARD_MEMBERS_LIST)!!
         }
     }
 

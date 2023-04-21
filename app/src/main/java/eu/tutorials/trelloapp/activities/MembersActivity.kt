@@ -3,8 +3,11 @@ package eu.tutorials.trelloapp.activities
 
 import android.app.Activity
 import android.app.Dialog
+import android.content.Intent
 import android.os.AsyncTask
+import android.os.Build
 import android.os.Bundle
+import android.os.Parcelable
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.TextView
@@ -26,6 +29,16 @@ class MembersActivity : BaseActivity() {
     private lateinit var mAssignedMembersList: ArrayList<User>
     private var anyChangesMade: Boolean = false
 
+    inline fun <reified T : Parcelable> Intent.parcelable(key: String): T? = when {
+        Build.VERSION.SDK_INT >= 33 -> getParcelableExtra(key, T::class.java)
+        else -> @Suppress("DEPRECATION") getParcelableExtra(key) as? T
+    }
+
+    inline fun <reified T : Parcelable> Bundle.parcelable(key: String): T? = when {
+        Build.VERSION.SDK_INT >= 33 -> getParcelable(key, T::class.java)
+        else -> @Suppress("DEPRECATION") getParcelable(key) as? T
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMembersBinding.inflate(layoutInflater)
@@ -33,9 +46,6 @@ class MembersActivity : BaseActivity() {
 
         if (intent.hasExtra(Constants.DOCUMENT_ID)) {
             mBoardDetails = intent.getSerializableExtra(Constants.DOCUMENT_ID) as Board
-//            showProgressDialog(resources.getString(R.string.please_wait))
-//            FireStoreClass().getAssignedMembersListDetails(this, intent.getStringExtra(Constants.DOCUMENT_ID)!!)
-
         }
 
         setupActionBar()
