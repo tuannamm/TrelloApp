@@ -3,6 +3,7 @@ package eu.tutorials.trelloapp.activities
 
 import android.app.Activity
 import android.app.Dialog
+import android.os.AsyncTask
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -31,7 +32,7 @@ class MembersActivity : BaseActivity() {
         setContentView(binding.root)
 
         if (intent.hasExtra(Constants.DOCUMENT_ID)) {
-//            mBoardDetails = intent.getStringArrayListExtra(Constants.DOCUMENT_ID)!! as Board
+            mBoardDetails = intent.getSerializableExtra(Constants.DOCUMENT_ID) as Board
 //            showProgressDialog(resources.getString(R.string.please_wait))
 //            FireStoreClass().getAssignedMembersListDetails(this, intent.getStringExtra(Constants.DOCUMENT_ID)!!)
 
@@ -119,6 +120,5 @@ class MembersActivity : BaseActivity() {
         anyChangesMade = true
         setupMembersList(mAssignedMembersList)
     }
-
 
 }

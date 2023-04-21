@@ -16,8 +16,6 @@ import eu.tutorials.trelloapp.models.Card
 import eu.tutorials.trelloapp.models.Task
 import eu.tutorials.trelloapp.models.User
 import eu.tutorials.trelloapp.utils.Constants
-import java.text.FieldPosition
-
 
 open class TaskListActivity : BaseActivity() {
 
