@@ -24,11 +24,9 @@ import eu.tutorials.trelloapp.models.Board
 import eu.tutorials.trelloapp.models.User
 import eu.tutorials.trelloapp.utils.Constants
 
-
 class MembersActivity : BaseActivity() {
-
-    private lateinit var binding: ActivityMembersBinding
     private lateinit var mBoardDetails: Board
+    private lateinit var binding: ActivityMembersBinding
     private lateinit var mAssignedMembersList: ArrayList<User>
     private var anyChangesMade: Boolean = false
     inline fun <reified T : Parcelable> Intent.parcelable(key: String): T? = when {
@@ -52,7 +50,6 @@ class MembersActivity : BaseActivity() {
     inline fun <reified T : View> View.find(id: Int): T = findViewById(id) as T
     inline fun <reified T : View> Activity.find(id: Int): T = findViewById(id) as T
     inline fun <reified T : View> Fragment.find(id: Int): T = view?.findViewById(id) as T
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

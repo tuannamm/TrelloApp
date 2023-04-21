@@ -2,7 +2,6 @@ package eu.tutorials.trelloapp.adapters
 
 import android.annotation.SuppressLint
 import android.app.AlertDialog
-import android.content.ClipData.Item
 import android.content.Context
 import android.content.res.Resources
 import android.view.LayoutInflater
@@ -20,7 +19,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import eu.tutorials.trelloapp.R
 import eu.tutorials.trelloapp.activities.TaskListActivity
-import eu.tutorials.trelloapp.models.Card
 import eu.tutorials.trelloapp.models.Task
 import java.util.Collections
 
@@ -169,7 +167,7 @@ open class TaskListItemsAdapter(
                         viewHolder: RecyclerView.ViewHolder
                     ) {
                         super.clearView(recyclerView, viewHolder)
-                        if(mPositionDraggedFrom != -1 && mPositionDraggedTo != -1 && mPositionDraggedFrom != mPositionDraggedTo) {
+                        if(mPositionDraggedFrom != -1 && mPositionDraggedTo != 1 && mPositionDraggedFrom != mPositionDraggedTo) {
                             (context as TaskListActivity).updateCardsInTaskList(position, list[position].cards)
                         }
                         mPositionDraggedFrom = -1
