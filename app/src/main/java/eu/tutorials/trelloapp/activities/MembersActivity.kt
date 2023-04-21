@@ -10,8 +10,10 @@ import android.os.Bundle
 import android.os.Parcelable
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import android.widget.TextView
 import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import eu.tutorials.trelloapp.R
 
@@ -22,36 +24,49 @@ import eu.tutorials.trelloapp.models.Board
 import eu.tutorials.trelloapp.models.User
 import eu.tutorials.trelloapp.utils.Constants
 
+
 class MembersActivity : BaseActivity() {
 
     private lateinit var binding: ActivityMembersBinding
     private lateinit var mBoardDetails: Board
     private lateinit var mAssignedMembersList: ArrayList<User>
     private var anyChangesMade: Boolean = false
-
     inline fun <reified T : Parcelable> Intent.parcelable(key: String): T? = when {
         Build.VERSION.SDK_INT >= 33 -> getParcelableExtra(key, T::class.java)
         else -> @Suppress("DEPRECATION") getParcelableExtra(key) as? T
     }
-
     inline fun <reified T : Parcelable> Bundle.parcelable(key: String): T? = when {
         Build.VERSION.SDK_INT >= 33 -> getParcelable(key, T::class.java)
         else -> @Suppress("DEPRECATION") getParcelable(key) as? T
     }
+    inline fun <reified T : Parcelable> Bundle.parcelableArrayList(key: String): ArrayList<T>? = when {
+        Build.VERSION.SDK_INT >= 33 -> getParcelableArrayList(key, T::class.java)
+        else -> @Suppress("DEPRECATION") getParcelableArrayList(key)
+    }
+
+    inline fun <reified T : Parcelable> Intent.parcelableArrayList(key: String): ArrayList<T>? = when {
+        Build.VERSION.SDK_INT >= 33 -> getParcelableArrayListExtra(key, T::class.java)
+        else -> @Suppress("DEPRECATION") getParcelableArrayListExtra(key)
+    }
+
+    inline fun <reified T : View> View.find(id: Int): T = findViewById(id) as T
+    inline fun <reified T : View> Activity.find(id: Int): T = findViewById(id) as T
+    inline fun <reified T : View> Fragment.find(id: Int): T = view?.findViewById(id) as T
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMembersBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        if (intent.hasExtra(Constants.DOCUMENT_ID)) {
-            mBoardDetails = intent.getSerializableExtra(Constants.DOCUMENT_ID) as Board
+        if (intent.hasExtra(Constants.DOCUMENT_ID) && Build.VERSION.SDK_INT >= 33) {
+            mBoardDetails = intent.getParcelableExtra(Constants.DOCUMENT_ID)!!
+            showProgressDialog(resources.getString(R.string.please_wait))
+            FireStoreClass().getAssignedMembersListDetails(this, mBoardDetails.assignedTo)
         }
 
         setupActionBar()
 
-        showProgressDialog(resources.getString(R.string.please_wait))
-        FireStoreClass().getAssignedMembersListDetails(this, mBoardDetails.assignedTo)
     }
 
     fun setupMembersList(list: ArrayList<User>) {
