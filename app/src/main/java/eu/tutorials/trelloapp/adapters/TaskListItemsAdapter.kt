@@ -163,12 +163,13 @@ open class TaskListItemsAdapter(
                     override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                     }
 
+                    //this function runs when the drag and drop done
                     override fun clearView(
                         recyclerView: RecyclerView,
                         viewHolder: RecyclerView.ViewHolder
                     ) {
                         super.clearView(recyclerView, viewHolder)
-                        if(mPositionDraggedFrom != -1 && mPositionDraggedTo != 1 && mPositionDraggedFrom != mPositionDraggedTo) {
+                        if(mPositionDraggedFrom != -1 && mPositionDraggedTo != -1 && mPositionDraggedFrom != mPositionDraggedTo) {
                             (context as TaskListActivity).updateCardsInTaskList(position, list[position].cards)
                         }
                         mPositionDraggedFrom = -1
@@ -177,7 +178,7 @@ open class TaskListItemsAdapter(
 
                 }
             )
-            helper.attachToRecyclerView(holder.itemView.findViewById<RecyclerView>(R.id.rv_card_list))
+            helper.attachToRecyclerView(holder.itemView.findViewById(R.id.rv_card_list))
         }
     }
     private fun alertDialogForDeleteList(position: Int, title: String) {
